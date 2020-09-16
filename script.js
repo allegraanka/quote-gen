@@ -6,12 +6,13 @@ const twitterBtn = document.getElementById('twitter');
 
 // Get Quote from API - Forismatic
 async function getQuote() {
-    const proxyURL = 'https://cors-anywhere.herokuapp.com/';
+    const proxyURL = 'https://damp-thicket-42276.herokuapp.com/';
     const requestURL = 'http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json';
     
     try {
         const response = await fetch(proxyURL + requestURL);
-        const data = response.json();
+        const data = await response.json();
+        console.log(data);
 
         if (!data.quoteAuthor) {
             authorText.innerText = 'Unknown';
@@ -31,4 +32,17 @@ async function getQuote() {
     }
 }
 
+// Tweet Quote
+function tweetQuote() {
+    const quote = quoteText.innerText;
+    const author = authorText.innerText;
+    const twitterURL = `https://twitter.com/intent/tweet?text=${quote} - ${author}`;
+    window.open(twitterURL, '_blank');
+}
+
+// Event Listeners
+newQuoteBtn.addEventListener('click', getQuote);
+twitterBtn.addEventListener('click', tweetQuote);
+
 // Run getQuote On Page Load
+getQuote();
