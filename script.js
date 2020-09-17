@@ -8,7 +8,7 @@ const loader = document.getElementById('loader');
 // Get Quote from API - Forismatic
 async function getQuote() {
     // Before anything else runs, show the loader and hide the quote box
-    loading();
+    showLoadingSpinner();
     
     // Declare endpoint URLs and make request 
     const proxyURL = 'https://damp-thicket-42276.herokuapp.com/';
@@ -38,14 +38,12 @@ async function getQuote() {
 
         quoteText.innerText = data.quoteText;
 
-        // Once the quote is loaded and data is assigned to elements, stop the loader and show the quoteContainer
-        complete();
+        removeLoadingSpinner();
     } catch(error) {
-        getQuote();
+        console.log('There was an error with getting a quote.', error);
     }
 }
 
-// Tweet Quote
 function tweetQuote() {
     const quote = quoteText.innerText;
     const author = authorText.innerText;
@@ -53,23 +51,19 @@ function tweetQuote() {
     window.open(twitterURL, '_blank');
 }
 
-// Loading
-function loading() {
+function showLoadingSpinner() {
     loader.hidden = false;
     quoteContainer.hidden = true;
 }
 
-// Loading Complete
-function complete() {
+function removeLoadingSpinner() {
     if (!loader.hidden) {
         loader.hidden = true;
         quoteContainer.hidden = false;
     }
 }
 
-// Event Listeners
 newQuoteBtn.addEventListener('click', getQuote);
 twitterBtn.addEventListener('click', tweetQuote);
 
-// Run getQuote On Page Load
 getQuote();
